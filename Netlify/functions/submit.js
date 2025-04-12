@@ -2,7 +2,7 @@ const fetch = require('node-fetch');
 
 exports.handler = async (event) => {
   const telegramBotToken = '7686288445:AAEFKviKwOyJMRRqwI23qNkycvK6u7PZFeY';
-  const telegramChatId = '7646336470'; // Your provided Chat ID
+  const telegramChatId = '7646336470';
   const telegramUrl = `https://api.telegram.org/bot${telegramBotToken}/sendMessage`;
 
   const ip = event.headers['client-ip'] || 'Unknown';
