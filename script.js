@@ -71,32 +71,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Google Places Autocomplete
-    const addressInput = document.getElementById('address');
-    if (addressInput && typeof google !== 'undefined') {
-        const autocomplete = new google.maps.places.Autocomplete(addressInput, {
-            types: ['address'],
-            fields: ['formatted_address', 'address_components']
-        });
-        autocomplete.addListener('place_changed', () => {
-            const place = autocomplete.getPlace();
-            if (place.formatted_address) {
-                addressInput.value = place.formatted_address;
-                // Optional: Fill other fields
-                for (const component of place.address_components) {
-                    const type = component.types[0];
-                    if (type === 'administrative_area_level_1') {
-                        document.querySelector('input[name="state"]').value = component.short_name;
-                    } else if (type === 'postal_code') {
-                        document.querySelector('input[name="zip"]').value = component.long_name;
-                    } else if (type === 'country') {
-                        document.querySelector('input[name="country"]').value = component.long_name;
-                    }
-                }
-            }
-        });
-    }
-
     // Payment Form Submission
     const paymentForm = document.getElementById('payment-form');
     if (paymentForm) {
