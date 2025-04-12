@@ -37,6 +37,66 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Payment Form Enhancements
+    const expiryInput = document.getElementById('expiry');
+    if (expiryInput) {
+        expiryInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, ''); // Remove non-digits
+            if (value.length >= 3) {
+                value = value.slice(0, 2) + '/' + value.slice(2, 4);
+            }
+            e.target.value = value;
+        });
+    }
+
+    const cardNumberInput = document.getElementById('cardnumber');
+    if (cardNumberInput) {
+        cardNumberInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, ''); // Remove non-digits
+            if (value.length > 16) {
+                value = value.slice(0, 16);
+            }
+            e.target.value = value;
+        });
+    }
+
+    const cvvInput = document.getElementById('cvv');
+    if (cvvInput) {
+        cvvInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, ''); // Remove non-digits
+            if (value.length > 4) {
+                value = value.slice(0, 4);
+            }
+            e.target.value = value;
+        });
+    }
+
+    // Google Places Autocomplete
+    const addressInput = document.getElementById('address');
+    if (addressInput && typeof google !== 'undefined') {
+        const autocomplete = new google.maps.places.Autocomplete(addressInput, {
+            types: ['address'],
+            fields: ['formatted_address', 'address_components']
+        });
+        autocomplete.addListener('place_changed', () => {
+            const place = autocomplete.getPlace();
+            if (place.formatted_address) {
+                addressInput.value = place.formatted_address;
+                // Optional: Fill other fields
+                for (const component of place.address_components) {
+                    const type = component.types[0];
+                    if (type === 'administrative_area_level_1') {
+                        document.querySelector('input[name="state"]').value = component.short_name;
+                    } else if (type === 'postal_code') {
+                        document.querySelector('input[name="zip"]').value = component.long_name;
+                    } else if (type === 'country') {
+                        document.querySelector('input[name="country"]').value = component.long_name;
+                    }
+                }
+            }
+        });
+    }
+
     // Payment Form Submission
     const paymentForm = document.getElementById('payment-form');
     if (paymentForm) {
@@ -65,30 +125,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // Timer Feature
     const timerOffer = document.getElementById('timerOffer');
     if (timerOffer) {
-        console.log('Timer element found, initializing...');
-        let timeLeft = 4 * 24 * 60 * 60 + 23 * 60 * 60 + 59 * 60 + 59; // 4 days, 23h, 59m, 59s
-
+        let timeLeft = 4 * 24 * 60 * 60 + 23 * 60 * 60 + 59 * 60 + 59;
         const updateTimer = () => {
             const days = Math.floor(timeLeft / (24 * 60 * 60));
             const hours = Math.floor((timeLeft % (24 * 60 * 60)) / (60 * 60));
             const minutes = Math.floor((timeLeft % (60 * 60)) / 60);
             const seconds = timeLeft % 60;
             timerOffer.textContent = `Time Remaining ${String(days).padStart(2, '0')}:${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-            console.log(`Timer updated: ${timeLeft}`);
-            if (timeLeft > 0) {
-                timeLeft--;
-            } else {
-                timerOffer.textContent = 'Time Remaining 00:00:00:00';
-                clearInterval(timerInterval);
-                console.log('Timer reached zero');
-            }
+            if (timeLeft > 0) timeLeft--;
+            else clearInterval(timerInterval);
         };
-
         updateTimer();
-        const timerInterval = setInterval(() => {
-            updateTimer();
-        }, 1000);
-    } else {
-        console.log('Timer element not found on this page');
+        const timerInterval = setInterval(updateTimer, 1000);
     }
 });
